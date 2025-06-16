@@ -64,13 +64,14 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }) {
                 >
                   <div className="absolute left-full top-0 flex w-16 justify-center pt-5">
                     <button type="button" className="-m-2.5 p-2.5" onClick={() => setSidebarOpen(false)}>
-                      <XMarkIcon className="h-6 w-6 text-white" />
+                      <span className="sr-only">Close sidebar</span>
+                      <XMarkIcon className="h-6 w-6 text-white" aria-hidden="true" />
                     </button>
                   </div>
                 </Transition.Child>
-                <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-white px-6 pb-2">
+                <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-white px-6 pb-4">
                   <div className="flex h-16 shrink-0 items-center">
-                    <h1 className="text-2xl font-bold text-primary-600">Track Cent</h1>
+                    <h1 className="text-2xl font-bold bg-gradient-to-r from-primary-600 to-primary-400 bg-clip-text text-transparent">Track Cent</h1>
                   </div>
                   <nav className="flex flex-1 flex-col">
                     <ul role="list" className="flex flex-1 flex-col gap-y-7">
@@ -80,13 +81,13 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }) {
                             <li key={item.name}>
                               <a
                                 href={item.href}
-                                className={`group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold ${
+                                className={`group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-medium ${
                                   router.pathname === item.href
                                     ? 'bg-primary-50 text-primary-600'
                                     : 'text-gray-700 hover:text-primary-600 hover:bg-primary-50'
                                 }`}
                               >
-                                <item.icon className="h-6 w-6 shrink-0" />
+                                <item.icon className="h-5 w-5 shrink-0" aria-hidden="true" />
                                 {item.name}
                               </a>
                             </li>
@@ -94,20 +95,20 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }) {
                         </ul>
                       </li>
                       <li className="-mx-6 mt-auto">
-                        <div className="flex items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-gray-900">
+                        <div className="flex items-center gap-x-4 px-6 py-3 text-sm font-medium leading-6 text-gray-900">
                           <div className="h-8 w-8 rounded-full bg-primary-100 flex items-center justify-center">
                             <span className="text-primary-600 font-medium">
                               {user?.name?.charAt(0).toUpperCase()}
                             </span>
                           </div>
                           <span className="sr-only">Your profile</span>
-                          <span>{user?.name}</span>
+                          <span className="truncate">{user?.name}</span>
                         </div>
                         <button
                           onClick={handleLogout}
-                          className="group -mx-2 flex w-full gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold text-gray-700 hover:bg-danger-50 hover:text-danger-600"
+                          className="group -mx-2 flex w-full gap-x-3 rounded-md p-2 text-sm leading-6 font-medium text-gray-700 hover:bg-danger-50 hover:text-danger-600"
                         >
-                          <ArrowRightOnRectangleIcon className="h-6 w-6 shrink-0" />
+                          <ArrowRightOnRectangleIcon className="h-5 w-5 shrink-0" aria-hidden="true" />
                           Logout
                         </button>
                       </li>
@@ -124,7 +125,7 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }) {
       <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
         <div className="flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6">
           <div className="flex h-16 shrink-0 items-center">
-            <h1 className="text-2xl font-bold text-primary-600">Track Cent</h1>
+            <h1 className="text-2xl font-bold bg-gradient-to-r from-primary-600 to-primary-400 bg-clip-text text-transparent">Track Cent</h1>
           </div>
           <nav className="flex flex-1 flex-col">
             <ul role="list" className="flex flex-1 flex-col gap-y-7">
@@ -134,13 +135,13 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }) {
                     <li key={item.name}>
                       <a
                         href={item.href}
-                        className={`group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold ${
+                        className={`group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-medium ${
                           router.pathname === item.href
                             ? 'bg-primary-50 text-primary-600'
                             : 'text-gray-700 hover:text-primary-600 hover:bg-primary-50'
                         }`}
                       >
-                        <item.icon className="h-6 w-6 shrink-0" />
+                        <item.icon className="h-5 w-5 shrink-0" aria-hidden="true" />
                         {item.name}
                       </a>
                     </li>
@@ -148,20 +149,20 @@ export default function Sidebar({ sidebarOpen, setSidebarOpen }) {
                 </ul>
               </li>
               <li className="-mx-6 mt-auto">
-                <div className="flex items-center gap-x-4 px-6 py-3 text-sm font-semibold leading-6 text-gray-900">
+                <div className="flex items-center gap-x-4 px-6 py-3 text-sm font-medium leading-6 text-gray-900">
                   <div className="h-8 w-8 rounded-full bg-primary-100 flex items-center justify-center">
                     <span className="text-primary-600 font-medium">
                       {user?.name?.charAt(0).toUpperCase()}
                     </span>
                   </div>
                   <span className="sr-only">Your profile</span>
-                  <span>{user?.name}</span>
+                  <span className="truncate">{user?.name}</span>
                 </div>
                 <button
                   onClick={handleLogout}
-                  className="group -mx-2 flex w-full gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold text-gray-700 hover:bg-danger-50 hover:text-danger-600"
+                  className="group -mx-2 flex w-full gap-x-3 rounded-md p-2 text-sm leading-6 font-medium text-gray-700 hover:bg-danger-50 hover:text-danger-600"
                 >
-                  <ArrowRightOnRectangleIcon className="h-6 w-6 shrink-0" />
+                  <ArrowRightOnRectangleIcon className="h-5 w-5 shrink-0" aria-hidden="true" />
                   Logout
                 </button>
               </li>

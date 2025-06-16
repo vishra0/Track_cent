@@ -3,42 +3,48 @@ import Expense from '../../../models/Expense';
 import { authenticate } from '../../../middleware/auth';
 
 export default async function handler(req, res) {
-  await dbConnect();
+  try {
+    await dbConnect();
 
-  if (req.method === 'GET') {
-    return authenticate(req, res, async () => {
-      try {
-        const expenses = await Expense.find({ userId: req.user._id }).sort({ date: -1 });
-        res.json(expenses);
-      } catch (error) {
-        res.status(500).json({ error: 'Failed to fetch expenses' });
-      }
-    });
-  }
-
-  if (req.method === 'POST') {
-    return authenticate(req, res, async () => {
-      try {
-        const { category, amount, date, description } = req.body;
-        
-        if (!category || !amount || !date) {
-          return res.status(400).json({ error: 'Category, amount, and date are required' });
+    if (req.method === 'GET') {
+      const authHandler = authenticate(req, res, async () => {
+        try {
+          const expenses = await Expense.find({ userId: req.user._id }).sort({ date: -1 });
+          return res.status(200).json(expenses);
+        } catch (error) {
+          return res.status(500).json({ error: 'Failed to fetch expenses' });
         }
+      });
+      return authHandler();
+    }
 
-        const expense = await Expense.create({
-          userId: req.user._id,
-          category,
-          amount: Number(amount),
-          date: new Date(date),
-          description,
-        });
+    if (req.method === 'POST') {
+      const authHandler = authenticate(req, res, async () => {
+        try {
+          const { category, amount, date, description } = req.body;
+          
+          if (!category || !amount || !date) {
+            return res.status(400).json({ error: 'Category, amount, and date are required' });
+          }
 
-        res.status(201).json(expense);
-      } catch (error) {
-        res.status(500).json({ error: 'Failed to create expense' });
-      }
-    });
+          const expense = await Expense.create({
+            userId: req.user._id,
+            category,
+            amount: Number(amount),
+            date: new Date(date),
+            description,
+          });
+
+          return res.status(201).json(expense);
+        } catch (error) {
+          return res.status(500).json({ error: 'Failed to create expense' });
+        }
+      });
+      return authHandler();
+    }
+
+    return res.status(405).json({ error: 'Method not allowed' });
+  } catch (error) {
+    return res.status(500).json({ error: 'Internal server error' });
   }
-
-  res.status(405).json({ error: 'Method not allowed' });
 }

@@ -18,28 +18,38 @@ ChartJS.register(
   Legend
 );
 
-export default function BarChartComponent({ data, title }) {
+export default function BarChartComponent({ data }) {
   const options = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
-        position: 'top',
+        display: false
       },
-      title: {
-        display: true,
-        text: title,
-        font: {
-          size: 16,
-          weight: 'bold',
-        },
-      },
+      tooltip: {
+        callbacks: {
+          label: function(context) {
+            const value = context.raw || 0;
+            return `$${value.toLocaleString()}`;
+          }
+        }
+      }
     },
     scales: {
       y: {
         beginAtZero: true,
-      },
-    },
+        ticks: {
+          callback: function(value) {
+            return '$' + value.toLocaleString();
+          }
+        }
+      }
+    }
   };
 
-  return <Bar data={data} options={options} />;
+  return (
+    <div className="w-full h-full">
+      <Bar data={data} options={options} />
+    </div>
+  );
 }

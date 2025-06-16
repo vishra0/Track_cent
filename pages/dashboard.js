@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import axios from 'axios';
+import axios from '../utils/axios';
 import Layout from '../components/Layout/Layout';
 import StatsCard from '../components/UI/StatsCard';
 import TransactionItem from '../components/UI/TransactionItem';
@@ -11,6 +11,8 @@ import {
   BanknotesIcon,
   ArrowTrendingUpIcon,
   ArrowTrendingDownIcon,
+  PlusCircleIcon,
+  MinusCircleIcon,
 } from '@heroicons/react/24/outline';
 
 export default function Dashboard() {
@@ -59,7 +61,7 @@ export default function Dashboard() {
   if (authLoading || loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary-600"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
       </div>
     );
   }
@@ -69,13 +71,13 @@ export default function Dashboard() {
   const totalExpenses = expenses.reduce((sum, expense) => sum + expense.amount, 0);
   const totalBalance = totalIncome - totalExpenses;
 
-  // Recent transactions (last 10)
+  // Recent transactions (last 5)
   const allTransactions = [
     ...incomes.map(income => ({ ...income, type: 'income' })),
     ...expenses.map(expense => ({ ...expense, type: 'expense' })),
   ]
     .sort((a, b) => new Date(b.date) - new Date(a.date))
-    .slice(0, 10);
+    .slice(0, 5);
 
   // Financial Overview Pie Chart Data
   const financialOverviewData = {
@@ -112,40 +114,88 @@ export default function Dashboard() {
     ],
   };
 
-  // 60-Day Income Overview
-  const sixtyDaysAgo = new Date();
-  sixtyDaysAgo.setDate(sixtyDaysAgo.getDate() - 60);
-  
-  const recentIncomes = incomes.filter(income => new Date(income.date) >= sixtyDaysAgo);
-  const incomesBySource = recentIncomes.reduce((acc, income) => {
-    acc[income.source] = (acc[income.source] || 0) + income.amount;
-    return acc;
-  }, {});
-
-  const incomeSourceData = {
-    labels: Object.keys(incomesBySource),
-    datasets: [
-      {
-        data: Object.values(incomesBySource),
-        backgroundColor: ['#3b82f6', '#22c55e', '#f59e0b', '#8b5cf6', '#ef4444'],
-        borderWidth: 0,
-      },
-    ],
-  };
-
   return (
     <Layout>
-      <div className="space-y-8">
-        {/* Header */}
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
-          <p className="text-gray-600">Welcome back, {user?.name}!</p>
+      <div className="space-y-6">
+        {/* Header with Action Buttons */}
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-xl font-semibold text-gray-900">Dashboard</h1>
+            <p className="text-sm text-gray-500">Welcome back, {user?.name}</p>
+          </div>
+          <div className="flex items-center space-x-2">
+            <button
+              onClick={() => router.push('/income')}
+              className="inline-flex items-center px-3 py-1.5 text-sm font-medium text-primary-600 bg-primary-50 rounded-md hover:bg-primary-100 transition-colors"
+            >
+              <PlusCircleIcon className="h-4 w-4 mr-1.5" />
+              Add Income
+            </button>
+            <button
+              onClick={() => router.push('/expenses')}
+              className="inline-flex items-center px-3 py-1.5 text-sm font-medium text-danger-600 bg-danger-50 rounded-md hover:bg-danger-100 transition-colors"
+            >
+              <MinusCircleIcon className="h-4 w-4 mr-1.5" />
+              Add Expense
+            </button>
+          </div>
         </div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <StatsCard
             title="Total Balance"
             value={totalBalance}
-            icon// TRACK CENT - FULL STACK FINANCE MANAGEMENT APPLICATION
+            icon={<BanknotesIcon className="h-4 w-4" />}
+          />
+          <StatsCard
+            title="Total Income"
+            value={totalIncome}
+            icon={<ArrowTrendingUpIcon className="h-4 w-4" />}
+          />
+          <StatsCard
+            title="Total Expenses"
+            value={totalExpenses}
+            icon={<ArrowTrendingDownIcon className="h-4 w-4" />}
+          />
+        </div>
+
+        {/* Charts */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-4">
+            <h2 className="text-sm font-medium text-gray-900 mb-4">Financial Overview</h2>
+            <div className="h-64">
+              <PieChartComponent data={financialOverviewData} />
+            </div>
+          </div>
+          <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-4">
+            <h2 className="text-sm font-medium text-gray-900 mb-4">Expense Categories (30 Days)</h2>
+            <div className="h-64">
+              <BarChartComponent data={expenseCategoryData} />
+            </div>
+          </div>
+        </div>
+
+        {/* Recent Transactions */}
+        <div className="bg-white rounded-lg shadow-sm border border-gray-100">
+          <div className="p-4 border-b border-gray-100">
+            <h2 className="text-sm font-medium text-gray-900">Recent Transactions</h2>
+          </div>
+          <div className="divide-y divide-gray-100">
+            {allTransactions.map((transaction) => (
+              <TransactionItem
+                key={`${transaction.type}-${transaction._id}`}
+                transaction={transaction}
+                type={transaction.type}
+                onDelete={() => handleDeleteTransaction(transaction._id, transaction.type)}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+    </Layout>
+  );
+}
+
+// TRACK CENT - FULL STACK FINANCE MANAGEMENT APPLICATION
 // This is a comprehensive Next.js application with the complete file structure

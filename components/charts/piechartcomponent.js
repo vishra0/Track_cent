@@ -8,23 +8,35 @@ import {
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-export default function PieChartComponent({ data, title }) {
+export default function PieChartComponent({ data }) {
   const options = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         position: 'bottom',
+        labels: {
+          padding: 20,
+          font: {
+            size: 12
+          }
+        }
       },
-      title: {
-        display: true,
-        text: title,
-        font: {
-          size: 16,
-          weight: 'bold',
-        },
-      },
-    },
+      tooltip: {
+        callbacks: {
+          label: function(context) {
+            const label = context.label || '';
+            const value = context.raw || 0;
+            return `${label}: $${value.toLocaleString()}`;
+          }
+        }
+      }
+    }
   };
 
-  return <Pie data={data} options={options} />;
+  return (
+    <div className="w-full h-full">
+      <Pie data={data} options={options} />
+    </div>
+  );
 }

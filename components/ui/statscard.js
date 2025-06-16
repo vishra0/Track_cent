@@ -1,4 +1,4 @@
-export default function StatsCard({ title, value, icon: Icon, color = 'primary' }) {
+export default function StatsCard({ title, value, icon, color = 'primary' }) {
   const colorClasses = {
     primary: 'bg-primary-50 text-primary-600',
     success: 'bg-success-50 text-success-600',
@@ -6,18 +6,16 @@ export default function StatsCard({ title, value, icon: Icon, color = 'primary' 
   };
 
   return (
-    <div className="bg-white overflow-hidden shadow rounded-lg">
-      <div className="p-5">
-        <div className="flex items-center">
-          <div className="flex-shrink-0">
-            <Icon className={`h-6 w-6 ${colorClasses[color]}`} />
+    <div className="bg-white overflow-hidden shadow-sm rounded-lg border border-gray-100">
+      <div className="p-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            <div className={`p-1.5 rounded-md ${colorClasses[color]}`}>
+              {icon}
+            </div>
+            <h3 className="text-sm font-medium text-gray-500">{title}</h3>
           </div>
-          <div className="ml-5 w-0 flex-1">
-            <dl>
-              <dt className="text-sm font-medium text-gray-500 truncate">{title}</dt>
-              <dd className="text-lg font-medium text-gray-900">${value.toLocaleString()}</dd>
-            </dl>
-          </div>
+          <p className="text-lg font-semibold text-gray-900">${value.toLocaleString()}</p>
         </div>
       </div>
     </div>

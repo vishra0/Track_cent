@@ -116,60 +116,66 @@ export default function Dashboard() {
 
   return (
     <Layout>
-      <div className="space-y-6">
+      <div className="container mx-auto p-4 space-y-6">
         {/* Header with Action Buttons */}
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div>
-            <h1 className="text-xl font-semibold text-gray-900">Dashboard</h1>
+            <h1 className="text-2xl font-semibold text-gray-900">Dashboard</h1>
             <p className="text-sm text-gray-500">Welcome back, {user?.name}</p>
           </div>
-          <div className="flex items-center space-x-2">
+          <div className="flex gap-4">
             <button
               onClick={() => router.push('/income')}
-              className="inline-flex items-center px-3 py-1.5 text-sm font-medium text-primary-600 bg-primary-50 rounded-md hover:bg-primary-100 transition-colors"
+              className="inline-flex items-center px-4 py-2 text-base font-medium text-primary-600 bg-primary-50 rounded-md hover:bg-primary-100 transition-colors"
             >
-              <PlusCircleIcon className="h-4 w-4 mr-1.5" />
+              <PlusCircleIcon className="h-5 w-5 mr-2" />
               Add Income
             </button>
             <button
               onClick={() => router.push('/expenses')}
-              className="inline-flex items-center px-3 py-1.5 text-sm font-medium text-danger-600 bg-danger-50 rounded-md hover:bg-danger-100 transition-colors"
+              className="inline-flex items-center px-4 py-2 text-base font-medium text-danger-600 bg-danger-50 rounded-md hover:bg-danger-100 transition-colors"
             >
-              <MinusCircleIcon className="h-4 w-4 mr-1.5" />
+              <MinusCircleIcon className="h-5 w-5 mr-2" />
               Add Expense
             </button>
           </div>
         </div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <StatsCard
-            title="Total Balance"
-            value={totalBalance}
-            icon={<BanknotesIcon className="h-4 w-4" />}
-          />
-          <StatsCard
-            title="Total Income"
-            value={totalIncome}
-            icon={<ArrowTrendingUpIcon className="h-4 w-4" />}
-          />
-          <StatsCard
-            title="Total Expenses"
-            value={totalExpenses}
-            icon={<ArrowTrendingDownIcon className="h-4 w-4" />}
-          />
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          <div className="max-w-sm w-full mx-auto">
+            <StatsCard
+              title="Total Balance"
+              value={totalBalance}
+              icon={<BanknotesIcon className="h-5 w-5" />}
+            />
+          </div>
+          <div className="max-w-sm w-full mx-auto">
+            <StatsCard
+              title="Total Income"
+              value={totalIncome}
+              icon={<ArrowTrendingUpIcon className="h-5 w-5" />}
+            />
+          </div>
+          <div className="max-w-sm w-full mx-auto">
+            <StatsCard
+              title="Total Expenses"
+              value={totalExpenses}
+              icon={<ArrowTrendingDownIcon className="h-5 w-5" />}
+            />
+          </div>
         </div>
 
         {/* Charts */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-4">
-            <h2 className="text-sm font-medium text-gray-900 mb-4">Financial Overview</h2>
+          <div className="bg-white rounded-md shadow-sm border border-gray-100 p-4 max-w-2xl mx-auto">
+            <h2 className="text-base font-medium text-gray-900 mb-4">Financial Overview</h2>
             <div className="h-64">
               <PieChartComponent data={financialOverviewData} />
             </div>
           </div>
-          <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-4">
-            <h2 className="text-sm font-medium text-gray-900 mb-4">Expense Categories (30 Days)</h2>
+          <div className="bg-white rounded-md shadow-sm border border-gray-100 p-4 max-w-2xl mx-auto">
+            <h2 className="text-base font-medium text-gray-900 mb-4">Expense Categories (30 Days)</h2>
             <div className="h-64">
               <BarChartComponent data={expenseCategoryData} />
             </div>
@@ -177,9 +183,9 @@ export default function Dashboard() {
         </div>
 
         {/* Recent Transactions */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-100">
+        <div className="bg-white rounded-md shadow-sm border border-gray-100 max-w-3xl mx-auto">
           <div className="p-4 border-b border-gray-100">
-            <h2 className="text-sm font-medium text-gray-900">Recent Transactions</h2>
+            <h2 className="text-base font-medium text-gray-900">Recent Transactions</h2>
           </div>
           <div className="divide-y divide-gray-100">
             {allTransactions.map((transaction) => (

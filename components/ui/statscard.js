@@ -6,16 +6,16 @@ export default function StatsCard({ title, value, icon, color = 'primary' }) {
   };
 
   return (
-    <div className="bg-white overflow-hidden shadow-sm rounded-lg border border-gray-100">
+    <div className="bg-white overflow-hidden shadow-sm rounded-md border border-gray-100 max-w-sm w-full mx-auto">
       <div className="p-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <div className={`p-1.5 rounded-md ${colorClasses[color]}`}>
+        <div className="flex items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className={`p-2 rounded-md ${colorClasses[color]}`}>
               {icon}
             </div>
-            <h3 className="text-sm font-medium text-gray-500">{title}</h3>
+            <h3 className="text-base font-medium text-gray-500">{title}</h3>
           </div>
-          <p className="text-lg font-semibold text-gray-900">${value.toLocaleString()}</p>
+          <p className="text-xl font-semibold text-gray-900">${value.toLocaleString()}</p>
         </div>
       </div>
     </div>

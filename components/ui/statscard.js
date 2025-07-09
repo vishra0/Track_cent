@@ -1,22 +1,16 @@
 export default function StatsCard({ title, value, icon, color = 'primary' }) {
   const colorClasses = {
-    primary: 'bg-primary-50 text-primary-600',
-    success: 'bg-success-50 text-success-600',
-    danger: 'bg-danger-50 text-danger-600',
+    primary: 'bg-primary-100 text-primary-700',
+    success: 'bg-green-100 text-green-700',
+    danger: 'bg-red-100 text-red-700',
   };
 
   return (
-    <div className="bg-white overflow-hidden shadow-sm rounded-md border border-gray-100 max-w-sm w-full mx-auto">
-      <div className="p-4">
-        <div className="flex items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <div className={`p-2 rounded-md ${colorClasses[color]}`}>
-              {icon}
-            </div>
-            <h3 className="text-base font-medium text-gray-500">{title}</h3>
-          </div>
-          <p className="text-xl font-semibold text-gray-900">${value.toLocaleString()}</p>
-        </div>
+    <div className="bg-white rounded shadow border p-3 flex items-center gap-2">
+      <div className={`p-1 rounded ${colorClasses[color]}`}>{icon}</div>
+      <div className="flex flex-col flex-1">
+        <span className="text-xs text-gray-500 font-medium">{title}</span>
+        <span className="text-base font-semibold text-gray-900">${value.toLocaleString()}</span>
       </div>
     </div>
   );
